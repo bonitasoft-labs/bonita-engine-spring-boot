@@ -23,8 +23,10 @@ dependencies {
     implementation("org.bonitasoft.engine.dsl:process-kotlin-dsl:0.0.1")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.1.4.RELEASE")
-
+    
+    testImplementation("org.springframework.boot:spring-boot-test:2.1.4.RELEASE")
     testImplementation("junit:junit:4.12")
+    testImplementation("org.assertj:assertj-core:3.12.2")
 }
 
 publishing {

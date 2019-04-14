@@ -16,6 +16,7 @@ public class BonitaEngine {
 
     @Autowired
     public BonitaEngine(APIClient apiClient) {
+        System.out.println("creating bean: BonitaEngine");
         this.apiClient = apiClient;
     }
 
