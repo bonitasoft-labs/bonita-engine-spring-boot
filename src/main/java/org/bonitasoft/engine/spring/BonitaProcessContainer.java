@@ -17,18 +17,18 @@ public class BonitaProcessContainer {
     private TestEngine engine;
     private BonitaEngine bonitaEngine;
     private List<Process> processes;
-    private List<ProcessBuilder> processBuilders;
+    private List<BonitaProcessBuilder> bonitaProcessBuilders;
     private List<ProcessDefinition> processDefinitions;
 
     @Autowired
     public BonitaProcessContainer(TestEngine engine,
                                   BonitaEngine bonitaEngine,
                                   List<Process> processes,
-                                  List<ProcessBuilder> processBuilders) {
+                                  List<BonitaProcessBuilder> bonitaProcessBuilders) {
         this.engine = engine;
         this.bonitaEngine = bonitaEngine;
         this.processes = processes;
-        this.processBuilders = processBuilders;
+        this.bonitaProcessBuilders = bonitaProcessBuilders;
     }
 
     //TODO should use application event
@@ -39,7 +39,7 @@ public class BonitaProcessContainer {
 
         List<BusinessArchive> exportedProcesses;
         exportedProcesses = processes.stream().map(Process::export).collect(Collectors.toList());
-        List<BusinessArchive> processesFromComponents = processBuilders.stream().map(ProcessBuilder::build).map(Process::export).collect(Collectors.toList());
+        List<BusinessArchive> processesFromComponents = bonitaProcessBuilders.stream().map(BonitaProcessBuilder::build).map(Process::export).collect(Collectors.toList());
         exportedProcesses.addAll(processesFromComponents);
         processDefinitions = bonitaEngine.deployProcesses(exportedProcesses);
     }
