@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    `maven-publish`
 }
 
 repositories {
@@ -23,4 +24,12 @@ dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.1.4.RELEASE")
 
     testImplementation("junit:junit:4.12")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("default") {
+            from(components["java"])
+        }
+    }
 }

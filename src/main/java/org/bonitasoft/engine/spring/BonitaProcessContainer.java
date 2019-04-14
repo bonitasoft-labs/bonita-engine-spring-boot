@@ -2,12 +2,11 @@ package org.bonitasoft.engine.spring;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
 
-import com.bonitasoft.engine.dsl.process.Process;
 import org.bonitasoft.engine.bpm.bar.BusinessArchive;
 import org.bonitasoft.engine.bpm.process.ProcessDefinition;
+import org.bonitasoft.engine.dsl.process.Process;
 import org.bonitasoft.engine.test.TestEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
