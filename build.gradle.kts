@@ -10,6 +10,7 @@ repositories {
 }
 
 group = "org.bonitasoft.engine"
+version = "0.0.1"
 
 dependencies {
     api("org.bonitasoft.engine:bonita-client:7.8.3")

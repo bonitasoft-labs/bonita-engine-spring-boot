@@ -7,4 +7,4 @@
  * in the user manual at https://docs.gradle.org/5.3.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = "bonita-engine-spring-boot"
+rootProject.name = "bonita-engine-spring-boot-starter"
