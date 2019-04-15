@@ -2,31 +2,32 @@ package org.bonitasoft.engine.spring;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 
 import org.bonitasoft.engine.api.APIClient;
 import org.bonitasoft.engine.bpm.bar.BusinessArchive;
 import org.bonitasoft.engine.bpm.process.ProcessDefinition;
+import org.bonitasoft.engine.test.TestEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.stereotype.Component;
 
 @Component
+@AutoConfigureBefore(OrganizationLoader.class)
 public class BonitaEngine {
 
+    private TestEngine engine;
     private APIClient apiClient;
 
     @Autowired
-    public BonitaEngine(APIClient apiClient) {
-        System.out.println("creating bean: BonitaEngine");
+    public BonitaEngine(TestEngine engine, APIClient apiClient) {
+        this.engine = engine;
         this.apiClient = apiClient;
     }
 
-    public List<ProcessDefinition> deployProcesses(List<BusinessArchive> processes) throws Exception {
-        //FIXME change default user using configuration
-        apiClient.login("install","install");
-        List<ProcessDefinition> deployedProcesses = new ArrayList<>();
-        for (BusinessArchive process : processes) {
-            deployedProcesses.add(apiClient.getProcessAPI().deployAndEnableProcess(process));
-        }
-        return deployedProcesses;
+    @PostConstruct
+    public void start() throws Exception {
+        engine.start();
+        apiClient.login("install", "install");
     }
 }

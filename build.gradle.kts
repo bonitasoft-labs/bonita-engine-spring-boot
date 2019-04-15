@@ -13,14 +13,15 @@ group = "org.bonitasoft.engine"
 version = "0.0.1"
 
 dependencies {
-    api("org.bonitasoft.engine:bonita-client:7.8.3")
-    api("org.bonitasoft.engine:bonita-common:7.8.3")
-    api("org.bonitasoft.engine:bonita-server:7.8.3")
-    api("org.bonitasoft.engine:bonita-test-api:7.8.3")
-    api("org.bonitasoft.platform:platform-resources:7.8.3")
-    api("org.springframework.boot:spring-boot-starter-jdbc:2.1.4.RELEASE")
+    api("org.bonitasoft.engine:bonita-client:7.9.0.W14-03")
+    api("org.bonitasoft.engine:bonita-common:7.9.0.W14-03")
+    api("org.bonitasoft.engine:bonita-server:7.9.0.W14-03")
+    api("org.bonitasoft.engine:bonita-test-api:7.9.0.W14-03")
+    api("org.bonitasoft.platform:platform-setup:7.9.0.W14-03")
+    api("org.springframework.boot:spring-boot-starter:2.1.4.RELEASE")
     //should not depend on the DSL: interface of process should be in an other module
     implementation("org.bonitasoft.engine.dsl:process-kotlin-dsl:0.0.1")
+    implementation("org.slf4j:slf4j-api:1.7.26")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.1.4.RELEASE")
     
