@@ -27,7 +27,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.26")
 
 
-    bonitaBundle("org.bonitasoft.distrib:bundle-tomcat-sp:7.8.0@zip")
+    bonitaBundle("org.bonitasoft.distrib:bundle-tomcat:7.9.0.W12@zip")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.1.4.RELEASE")
 

@@ -58,6 +58,7 @@ public class BonitaProcessContainer {
             ExportedProcessConfiguration exportedProcessConfiguration = configuration.export();
             ActorMapping actorMapping = exportedProcessConfiguration.getActorMapping();
             bar.setActorMapping(actorMapping);
+            bar.setParameters(exportedProcessConfiguration.getParameters());
         }
         ProcessDefinition processDefinition;
         try {
