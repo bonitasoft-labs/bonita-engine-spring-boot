@@ -6,7 +6,6 @@ import javax.annotation.PostConstruct;
 
 import org.bonitasoft.engine.api.APIClient;
 import org.bonitasoft.engine.bpm.bar.BusinessArchive;
-import org.bonitasoft.engine.bpm.bar.actorMapping.ActorMapping;
 import org.bonitasoft.engine.bpm.process.ActivationState;
 import org.bonitasoft.engine.bpm.process.Problem;
 import org.bonitasoft.engine.bpm.process.ProcessDefinition;
@@ -14,7 +13,7 @@ import org.bonitasoft.engine.bpm.process.ProcessDefinitionNotFoundException;
 import org.bonitasoft.engine.bpm.process.ProcessDeployException;
 import org.bonitasoft.engine.bpm.process.ProcessDeploymentInfo;
 import org.bonitasoft.engine.bpm.process.ProcessEnablementException;
-import org.bonitasoft.engine.dsl.process.ExportedProcessConfiguration;
+import org.bonitasoft.engine.dsl.process.BARBuilder;
 import org.bonitasoft.engine.dsl.process.Process;
 import org.bonitasoft.engine.dsl.process.ProcessConfiguration;
 import org.bonitasoft.engine.exception.AlreadyExistsException;
@@ -51,15 +50,9 @@ public class BonitaProcessContainer {
     }
 
     private ProcessDefinition deploy(BonitaProcessBuilder bonitaProcessBuilder) throws ProcessDeployException, ProcessDefinitionNotFoundException {
-        Process export = bonitaProcessBuilder.build();
-        BusinessArchive bar = export.export();
+        Process process = bonitaProcessBuilder.build();
         ProcessConfiguration configuration = bonitaProcessBuilder.configuration();
-        if (configuration != null) {
-            ExportedProcessConfiguration exportedProcessConfiguration = configuration.export();
-            ActorMapping actorMapping = exportedProcessConfiguration.getActorMapping();
-            bar.setActorMapping(actorMapping);
-            bar.setParameters(exportedProcessConfiguration.getParameters());
-        }
+        BusinessArchive bar = BARBuilder.INSTANCE.build(process, configuration == null ? new ProcessConfiguration() : configuration);
         ProcessDefinition processDefinition;
         try {
             processDefinition = apiClient.getProcessAPI().deploy(bar);
