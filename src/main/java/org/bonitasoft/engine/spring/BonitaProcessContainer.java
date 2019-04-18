@@ -61,6 +61,7 @@ public class BonitaProcessContainer {
         } catch (AlreadyExistsException e) {
             logger.info("Process {} {} is already deployed, redeploying it", getProcessName(bar), getProcessVersion(bar) );
             long processDefinitionId = apiClient.getProcessAPI().getProcessDefinitionId(getProcessName(bar), getProcessVersion(bar));
+            apiClient.getProcessAPI().deleteProcessInstances(processDefinitionId, 0, 100);
             apiClient.getProcessAPI().disableAndDeleteProcessDefinition(processDefinitionId);
             processDefinition = apiClient.getProcessAPI().deploy(bar);
         }
