@@ -8,6 +8,7 @@ import org.bonitasoft.engine.api.APIClient;
 import org.bonitasoft.engine.bpm.bar.BusinessArchive;
 import org.bonitasoft.engine.bpm.process.ActivationState;
 import org.bonitasoft.engine.bpm.process.Problem;
+import org.bonitasoft.engine.bpm.process.ProcessActivationException;
 import org.bonitasoft.engine.bpm.process.ProcessDefinition;
 import org.bonitasoft.engine.bpm.process.ProcessDefinitionNotFoundException;
 import org.bonitasoft.engine.bpm.process.ProcessDeployException;
@@ -17,6 +18,7 @@ import org.bonitasoft.engine.dsl.process.BARBuilder;
 import org.bonitasoft.engine.dsl.process.Process;
 import org.bonitasoft.engine.dsl.process.ProcessConfiguration;
 import org.bonitasoft.engine.exception.AlreadyExistsException;
+import org.bonitasoft.engine.exception.DeletionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,7 @@ public class BonitaProcessContainer {
         }
     }
 
-    private ProcessDefinition deploy(BonitaProcessBuilder bonitaProcessBuilder) throws ProcessDeployException, ProcessDefinitionNotFoundException {
+    private ProcessDefinition deploy(BonitaProcessBuilder bonitaProcessBuilder) throws ProcessDeployException, ProcessDefinitionNotFoundException, DeletionException, ProcessActivationException, AlreadyExistsException {
         Process process = bonitaProcessBuilder.build();
         ProcessConfiguration configuration = bonitaProcessBuilder.configuration();
         BusinessArchive bar = BARBuilder.INSTANCE.build(process, configuration == null ? new ProcessConfiguration() : configuration);
@@ -57,9 +59,10 @@ public class BonitaProcessContainer {
         try {
             processDefinition = apiClient.getProcessAPI().deploy(bar);
         } catch (AlreadyExistsException e) {
-            logger.info("Process {} {} is already deployed", getProcessName(bar), getProcessVersion(bar) );
+            logger.info("Process {} {} is already deployed, redeploying it", getProcessName(bar), getProcessVersion(bar) );
             long processDefinitionId = apiClient.getProcessAPI().getProcessDefinitionId(getProcessName(bar), getProcessVersion(bar));
-            processDefinition = apiClient.getProcessAPI().getProcessDefinition(processDefinitionId);
+            apiClient.getProcessAPI().disableAndDeleteProcessDefinition(processDefinitionId);
+            processDefinition = apiClient.getProcessAPI().deploy(bar);
         }
         try {
             ProcessDeploymentInfo processDeploymentInfo = apiClient.getProcessAPI().getProcessDeploymentInfo(processDefinition.getId());
