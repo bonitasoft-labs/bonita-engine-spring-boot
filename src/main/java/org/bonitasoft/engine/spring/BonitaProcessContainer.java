@@ -31,6 +31,7 @@ public class BonitaProcessContainer {
     private BonitaEngine bonitaEngine;
     private APIClient apiClient;
     private List<BonitaProcessBuilder> bonitaProcessBuilders;
+    private List<BusinessArchive> businessArchives;
     private List<ProcessDefinition> processDefinitions = new ArrayList<>();
 
     @Autowired
@@ -46,8 +47,10 @@ public class BonitaProcessContainer {
     @PostConstruct
     private void deployProcesses() throws Exception {
         for (BonitaProcessBuilder bonitaProcessBuilder : bonitaProcessBuilders) {
-
             deploy(bonitaProcessBuilder);
+        }
+        for (BusinessArchive businessArchive : businessArchives) {
+            deploy(businessArchive);
         }
     }
 
@@ -55,6 +58,10 @@ public class BonitaProcessContainer {
         Process process = bonitaProcessBuilder.build();
         ProcessConfiguration configuration = bonitaProcessBuilder.configuration();
         BusinessArchive bar = BARBuilder.INSTANCE.build(process, configuration == null ? new ProcessConfiguration() : configuration);
+        return deploy(bar);
+    }
+
+    private ProcessDefinition deploy(BusinessArchive bar) throws ProcessDeployException, ProcessDefinitionNotFoundException, DeletionException, ProcessActivationException, AlreadyExistsException {
         ProcessDefinition processDefinition;
         try {
             processDefinition = apiClient.getProcessAPI().deploy(bar);
