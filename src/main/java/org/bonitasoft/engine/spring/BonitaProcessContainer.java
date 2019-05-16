@@ -37,9 +37,11 @@ public class BonitaProcessContainer {
     @Autowired
     public BonitaProcessContainer(BonitaEngine bonitaEngine,
                                   APIClient apiClient,
+                                  List<BusinessArchive> businessArchives,
                                   List<BonitaProcessBuilder> bonitaProcessBuilders) {
         this.bonitaEngine = bonitaEngine;
         this.apiClient = apiClient;
+        this.businessArchives = businessArchives;
         this.bonitaProcessBuilders = bonitaProcessBuilders;
     }
 
