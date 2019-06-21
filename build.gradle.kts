@@ -15,11 +15,11 @@ version = "0.0.1"
 val bonitaBundle by configurations.creating
 
 dependencies {
-    api("org.bonitasoft.engine:bonita-client:7.9.0.W14-03")
-    api("org.bonitasoft.engine:bonita-common:7.9.0.W14-03")
-    api("org.bonitasoft.engine:bonita-server:7.9.0.W14-03")
-    api("org.bonitasoft.engine:bonita-test-api:7.9.0.W14-03")
-    api("org.bonitasoft.platform:platform-setup:7.9.0.W14-03")
+    api("org.bonitasoft.engine:bonita-client:7.9.0")
+    api("org.bonitasoft.engine:bonita-common:7.9.0")
+    api("org.bonitasoft.engine:bonita-server:7.9.0")
+    api("org.bonitasoft.engine:bonita-test-api:7.9.0")
+    api("org.bonitasoft.platform:platform-setup:7.9.0")
     api("org.springframework.boot:spring-boot-starter:2.1.4.RELEASE")
     api("org.springframework.boot:spring-boot-starter-data-rest:2.1.4.RELEASE")
     //should not depend on the DSL: interface of process should be in an other module
