@@ -27,7 +27,6 @@ dependencies {
     implementation("org.slf4j:slf4j-api:1.7.26")
 
 
-    bonitaBundle("org.bonitasoft.distrib:bundle-tomcat:7.9.0.W12@zip")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor:2.1.4.RELEASE")
 
@@ -38,40 +37,6 @@ dependencies {
 
 
 
-tasks.create("extractBonitaBundle", Copy::class) {
-    from(zipTree(bonitaBundle.resolvedConfiguration.resolvedArtifacts.first().file)) {
-        include("**/bonita.war")
-        includeEmptyDirs = false
-        eachFile {
-            relativePath = RelativePath(true, *relativePath.segments.drop(1).toTypedArray())
-        }
-    }
-    into("$buildDir/bonita-build-workdir/bonita-bundle")
-}
-
-tasks.create("extractBonitaWar", Copy::class) {
-    dependsOn("extractBonitaBundle")
-    from(zipTree("$buildDir/bonita-build-workdir/bonita-bundle/server/webapps/bonita.war"))
-    into("$buildDir/bonita-build-workdir/bonita-exploded-war")
-    includeEmptyDirs = false
-}
-tasks.create("bonitaPortalResources", Copy::class) {
-    dependsOn("extractBonitaWar")
-    from("$buildDir/bonita-build-workdir/bonita-exploded-war/WEB-INF/classes")
-    into("$buildDir/bonita-resources")
-    include("*.zip")
-}
-tasks.processResources {
-    dependsOn("bonitaPortalResources")
-}
-
-sourceSets {
-    main {
-        resources {
-            srcDir("$buildDir/bonita-resources")
-        }
-    }
-}
 
 publishing {
     publications {
